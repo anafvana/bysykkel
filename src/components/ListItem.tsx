@@ -10,37 +10,41 @@ import {
 import { useState } from "react";
 
 export interface ListItemProps {
-  sId: string;
-  sData: StationData;
-  sStatus: StationStatus | undefined;
+  stationId: string;
+  stationData: StationData;
+  stationStatus: StationStatus | undefined;
 }
 
 const ListItem = (props: ListItemProps) => {
   const [expanded, setExpanded] = useState(false);
   return (
-    <article className='listitem' id={`station-${props.sId}`}>
+    <article className='listitem' id={`station-${props.stationId}`}>
       <button
-        id={`button-${props.sId}`}
+        id={`button-${props.stationId}`}
         className='listitem-button'
         aria-expanded={expanded}
         onClick={() => setExpanded(!expanded)}
       >
-        <p>{props.sData.name}</p>
+        <p>{props.stationData.name}</p>
         <p>
           <FontAwesomeIcon icon={faBicycle} />{" "}
-          {props.sStatus?.num_bikes_available}
+          {props.stationStatus?.num_bikes_available}
         </p>
         <p>
           <FontAwesomeIcon icon={faParking} />
-          {props.sStatus?.num_docks_available}
+          {props.stationStatus?.num_docks_available}
         </p>
         <FontAwesomeIcon
           icon={faAngleDown}
           className='listitem-button-chevron'
-          id={`chevron-${props.sId}`}
+          id={`chevron-${props.stationId}`}
         />
       </button>
-      <Expandable sId={props.sId} sData={props.sData} sStatus={props.sStatus} />
+      <Expandable
+        stationId={props.stationId}
+        stationData={props.stationData}
+        stationStatus={props.stationStatus}
+      />
     </article>
   );
 };

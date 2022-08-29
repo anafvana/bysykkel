@@ -125,10 +125,10 @@ const Main = () => {
             content.stations[station_id].data !== undefined ? (
               <ListItem
                 key={station_id}
-                sId={station_id}
+                stationId={station_id}
                 //@ts-ignore
-                sData={content.stations[station_id].data}
-                sStatus={content.stations[station_id].status}
+                stationData={content.stations[station_id].data}
+                stationStatus={content.stations[station_id].status}
               />
             ) : (
               ""

@@ -3,12 +3,13 @@ import { ListItemProps } from "./ListItem";
 
 const Expandable = (props: ListItemProps) => {
   return (
-    <div className='listitem-expandable' id={`expandable-${props.sId}`}>
+    <div className='listitem-expandable' id={`expandable-${props.stationId}`}>
       <div className='listitem-expandable-data'>
-        <p>Address: {props.sData.address}</p>
-        <p>Capacity: {props.sData.capacity}</p>
+        <p>Station ID: {props.stationId}</p>
+        <p>Address: {props.stationData.address}</p>
+        <p>Capacity: {props.stationData.capacity}</p>
         <a
-          href={`https://www.google.com/maps/place/Oslo+Bysykkel/@${props.sData.lat},${props.sData.lon},20z`}
+          href={`https://www.google.com/maps/place/Oslo+Bysykkel/@${props.stationData.lat},${props.stationData.lon},20z`}
           target='_blank'
           rel='noopener noreferrer'
         >
@@ -16,9 +17,9 @@ const Expandable = (props: ListItemProps) => {
         </a>
       </div>
       <div className='listitem-expandable-status'>
-        {props.sStatus?.last_reported !== undefined &&
-        props.sStatus?.last_reported !== NaN ? (
-          <p>Last update: {unixToDate(props.sStatus?.last_reported)}</p>
+        {props.stationStatus?.last_reported !== undefined &&
+        props.stationStatus?.last_reported !== NaN ? (
+          <p>Last update: {unixToDate(props.stationStatus?.last_reported)}</p>
         ) : (
           ""
         )}
