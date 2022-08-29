@@ -1,3 +1,57 @@
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+body {
+  line-height: 1;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+}
+
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input,
+select {
+  vertical-align: middle;
+}
+
+/* Actual CSS */
+
 html,
 body,
 #root {
@@ -6,7 +60,6 @@ body,
 
 #app {
   min-height: 100%;
-  text-align: center;
   display: flex;
   flex-direction: column;
   background-color: aqua;

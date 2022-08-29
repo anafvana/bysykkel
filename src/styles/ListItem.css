@@ -1,0 +1,23 @@
+.listitem {
+  width: 100%;
+  background-color: blanchedalmond;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.listitem-button {
+  background-color: aliceblue;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr auto;
+  align-items: center;
+  text-align: start;
+}
+
+.listitem-button-chevron {
+  margin: 0.5rem;
+}
+
+.listitem-expandable {
+  display: none;
+}

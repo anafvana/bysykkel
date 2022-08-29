@@ -3,6 +3,7 @@ import FetchedStationData from "../types/StationData";
 import FetchedStationStatus from "../types/StationStatus";
 import Stations from "../types/Station";
 import ListItem from "./ListItem";
+import "../styles/Main.css";
 
 const fetchStationData = async (): Promise<FetchedStationData | undefined> => {
   const response = await fetch(

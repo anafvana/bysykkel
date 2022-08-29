@@ -1,4 +1,5 @@
 import { StationData, StationStatus } from "../types/Station";
+import { unixToDate } from "../utils/utils";
 import { ListItemProps } from "./ListItem";
 
 const Expandable = (props: ListItemProps) => {
@@ -16,7 +17,12 @@ const Expandable = (props: ListItemProps) => {
         </a>
       </div>
       <div className='status'>
-        <p>Last update: {props.sStatus?.last_reported}</p>
+        {props.sStatus?.last_reported !== undefined &&
+        props.sStatus?.last_reported !== NaN ? (
+          <p>Last update: {unixToDate(props.sStatus?.last_reported)}</p>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
