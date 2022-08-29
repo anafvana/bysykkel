@@ -4,6 +4,7 @@ import FetchedStationStatus from "../types/StationStatus";
 import Stations from "../types/Station";
 import ListItem from "./ListItem";
 import "../styles/Main.css";
+import { unixToDate } from "../utils/utils";
 
 // Fetch data about stations (address, capacity, etc)
 const fetchStationData = async (): Promise<FetchedStationData | undefined> => {
@@ -83,44 +84,59 @@ const mergeData = (
 const Main = () => {
   const [content, setContent] = useState<undefined | Stations>(undefined);
 
-  // Retrieve content
+  // Fetch and generate content
+  const getContent = async () => {
+    const stationData = await fetchStationData();
+    const stationStatus = await fetchStationStatus();
+
+    const content =
+      stationData !== undefined && stationStatus !== undefined
+        ? mergeData(stationData, stationStatus)
+        : undefined;
+    setContent(content);
+  };
+
+  // Retrieve content on mount
   useEffect(() => {
-    const getContent = async () => {
-      const stationData = await fetchStationData();
-      const stationStatus = await fetchStationStatus();
-
-      const content =
-        stationData !== undefined && stationStatus !== undefined
-          ? mergeData(stationData, stationStatus)
-          : undefined;
-      setContent(content);
-    };
     getContent();
-
-    // Handle unmounting
     return () => {};
   }, []);
 
+  // Update content periodically
+  setInterval(() => {
+    getContent();
+  }, 300000);
+
   return (
-    <div id='main'>
-      {content == undefined ? (
-        <p>Data could not be fetched</p>
+    <main id='main'>
+      {content !== undefined && content.last_status_update !== undefined ? (
+        <p className='main-lastupdate'>
+          Last update: {unixToDate(content.last_status_update)}
+        </p>
       ) : (
-        Object.keys(content.stations).map((station_id: string) =>
-          content.stations[station_id].data !== undefined ? (
-            <ListItem
-              key={station_id}
-              sId={station_id}
-              //@ts-ignore
-              sData={content.stations[station_id].data}
-              sStatus={content.stations[station_id].status}
-            />
-          ) : (
-            ""
-          )
-        )
+        ""
       )}
-    </div>
+
+      <section>
+        {content == undefined ? (
+          <p>Data could not be fetched</p>
+        ) : (
+          Object.keys(content.stations).map((station_id: string) =>
+            content.stations[station_id].data !== undefined ? (
+              <ListItem
+                key={station_id}
+                sId={station_id}
+                //@ts-ignore
+                sData={content.stations[station_id].data}
+                sStatus={content.stations[station_id].status}
+              />
+            ) : (
+              ""
+            )
+          )
+        )}
+      </section>
+    </main>
   );
 };
 
