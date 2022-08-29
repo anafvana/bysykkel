@@ -17,8 +17,6 @@ export interface StationStatus {
 }
 
 interface Stations {
-  last_update?: number;
-  last_data_update?: number;
   last_status_update?: number;
   stations: {
     [x: string]: {

@@ -1,4 +1,3 @@
-import { StationData, StationStatus } from "../types/Station";
 import { unixToDate } from "../utils/utils";
 import { ListItemProps } from "./ListItem";
 

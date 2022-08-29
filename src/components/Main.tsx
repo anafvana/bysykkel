@@ -5,6 +5,7 @@ import Stations from "../types/Station";
 import ListItem from "./ListItem";
 import "../styles/Main.css";
 
+// Fetch data about stations (address, capacity, etc)
 const fetchStationData = async (): Promise<FetchedStationData | undefined> => {
   const response = await fetch(
     "https://gbfs.urbansharing.com/oslobysykkel.no/station_information.json",
@@ -26,6 +27,7 @@ const fetchStationData = async (): Promise<FetchedStationData | undefined> => {
   }
 };
 
+// Fetch station status (available bikes, empty racks, etc)
 const fetchStationStatus = async (): Promise<
   undefined | FetchedStationStatus
 > => {
@@ -49,6 +51,7 @@ const fetchStationStatus = async (): Promise<
   }
 };
 
+// Join data from different endpoints
 const mergeData = (
   sData: FetchedStationData,
   sStatus: FetchedStationStatus
@@ -56,7 +59,6 @@ const mergeData = (
   const res: Stations = { stations: {} };
 
   // Handle station data
-  res.last_data_update = sData.last_updated;
   sData.data.stations.map((station) => {
     res.stations[station.station_id] =
       res.stations[station.station_id] === undefined
@@ -75,15 +77,13 @@ const mergeData = (
     return (res.stations[station.station_id].status = { ...station });
   });
 
-  // Set last update as now
-  res.last_update = Date.now() / 1000;
-
   return res;
 };
 
 const Main = () => {
   const [content, setContent] = useState<undefined | Stations>(undefined);
 
+  // Retrieve content
   useEffect(() => {
     const getContent = async () => {
       const stationData = await fetchStationData();
