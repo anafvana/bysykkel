@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import FetchedStationData from "../types/StationData";
 import FetchedStationStatus from "../types/StationStatus";
 import Stations from "../types/Station";
+import ListItem from "./ListItem";
 
-const fetchStationData = async (): Promise<FetchedStationData | null> => {
+const fetchStationData = async (): Promise<FetchedStationData | undefined> => {
   const response = await fetch(
     "https://gbfs.urbansharing.com/oslobysykkel.no/station_information.json",
     {
@@ -13,18 +14,20 @@ const fetchStationData = async (): Promise<FetchedStationData | null> => {
     }
   );
 
-  if (!response.ok) return null;
+  if (!response.ok) return undefined;
 
   try {
     const stationData: FetchedStationData = await response.json();
     return stationData;
   } catch (e) {
     console.error(e);
-    return null;
+    return undefined;
   }
 };
 
-const fetchStationStatus = async (): Promise<null | FetchedStationStatus> => {
+const fetchStationStatus = async (): Promise<
+  undefined | FetchedStationStatus
+> => {
   const response = await fetch(
     "https://gbfs.urbansharing.com/oslobysykkel.no/station_status.json",
     {
@@ -34,14 +37,14 @@ const fetchStationStatus = async (): Promise<null | FetchedStationStatus> => {
     }
   );
 
-  if (!response.ok) return null;
+  if (!response.ok) return undefined;
 
   try {
     const stationStatus: FetchedStationStatus = await response.json();
     return stationStatus;
   } catch (e) {
     console.error(e);
-    return null;
+    return undefined;
   }
 };
 
@@ -51,9 +54,9 @@ const mergeData = (
 ): Stations => {
   const res: Stations = { stations: {} };
 
+  // Handle station data
   res.last_data_update = sData.last_updated;
   sData.data.stations.map((station) => {
-    // TODO Create or add
     res.stations[station.station_id] =
       res.stations[station.station_id] === undefined
         ? {}
@@ -61,9 +64,9 @@ const mergeData = (
     return (res.stations[station.station_id].data = { ...station });
   });
 
+  // Handle station status
   res.last_status_update = sStatus.last_updated;
   sStatus.data.stations.map((station) => {
-    // TODO Create or add
     res.stations[station.station_id] =
       res.stations[station.station_id] === undefined
         ? {}
@@ -71,13 +74,14 @@ const mergeData = (
     return (res.stations[station.station_id].status = { ...station });
   });
 
+  // Set last update as now
   res.last_update = Date.now() / 1000;
 
   return res;
 };
 
 const Main = () => {
-  const [content, setContent] = useState<null | Stations>(null);
+  const [content, setContent] = useState<undefined | Stations>(undefined);
 
   useEffect(() => {
     const getContent = async () => {
@@ -85,9 +89,9 @@ const Main = () => {
       const stationStatus = await fetchStationStatus();
 
       const content =
-        stationData !== null && stationStatus !== null
+        stationData !== undefined && stationStatus !== undefined
           ? mergeData(stationData, stationStatus)
-          : null;
+          : undefined;
       setContent(content);
     };
     getContent();
@@ -98,12 +102,22 @@ const Main = () => {
 
   return (
     <div id='main'>
-      {content == null ? (
+      {content == undefined ? (
         <p>Data could not be fetched</p>
       ) : (
-        Object.keys(content.stations).map((station_id: string) => (
-          <li key={station_id}>{content.stations[station_id].data?.address}</li>
-        ))
+        Object.keys(content.stations).map((station_id: string) =>
+          content.stations[station_id].data !== undefined ? (
+            <ListItem
+              key={station_id}
+              sId={station_id}
+              //@ts-ignore
+              sData={content.stations[station_id].data}
+              sStatus={content.stations[station_id].status}
+            />
+          ) : (
+            ""
+          )
+        )
       )}
     </div>
   );
