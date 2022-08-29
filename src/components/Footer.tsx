@@ -1,7 +1,11 @@
-const Footer = () => {
-    return(
-        <div id="footer">Footer</div>
-    )
-}
+import "../styles/Footer.css";
 
-export default Footer
+const Footer = () => {
+  return (
+    <footer id='footer'>
+      All data has been fetched from Oslo Bysykkel's API
+    </footer>
+  );
+};
+
+export default Footer;

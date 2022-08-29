@@ -7,36 +7,7 @@ import {
   faBicycle,
   faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
-
-const toggleMoreInfo = (station_id: string) => {
-  const btn = document.getElementById(`button-${station_id}`);
-  if (btn === undefined || btn === null) {
-    console.error("Could not find button element");
-    return;
-  }
-
-  const expandable = document.getElementById(`expandable-${station_id}`);
-  if (expandable === undefined || expandable === null) {
-    console.error("Could not find Expandable element");
-    return;
-  }
-
-  const chevron = document.getElementById(`chevron-${station_id}`);
-  if (chevron === undefined || chevron === null) {
-    console.error("Could not find chevron element");
-    return;
-  }
-
-  if (btn.ariaExpanded == "true") {
-    expandable.style.display = "none";
-    btn.ariaExpanded = "false";
-    chevron.style.transform = "rotateX(0deg)";
-  } else {
-    expandable.style.display = "flex";
-    btn.ariaExpanded = "true";
-    chevron.style.transform = "rotateX(180deg)";
-  }
-};
+import { useState } from "react";
 
 export interface ListItemProps {
   sId: string;
@@ -45,13 +16,14 @@ export interface ListItemProps {
 }
 
 const ListItem = (props: ListItemProps) => {
+  const [expanded, setExpanded] = useState(false);
   return (
     <article className='listitem' id={`station-${props.sId}`}>
       <button
         id={`button-${props.sId}`}
         className='listitem-button'
-        aria-expanded='false'
-        onClick={() => toggleMoreInfo(props.sId)}
+        aria-expanded={expanded}
+        onClick={() => setExpanded(!expanded)}
       >
         <p>{props.sData.name}</p>
         <p>

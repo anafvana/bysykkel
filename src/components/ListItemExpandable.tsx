@@ -5,7 +5,7 @@ import { ListItemProps } from "./ListItem";
 const Expandable = (props: ListItemProps) => {
   return (
     <div className='listitem-expandable' id={`expandable-${props.sId}`}>
-      <div className='data'>
+      <div className='listitem-expandable-data'>
         <p>Address: {props.sData.address}</p>
         <p>Capacity: {props.sData.capacity}</p>
         <a
@@ -16,7 +16,7 @@ const Expandable = (props: ListItemProps) => {
           See on Google Maps
         </a>
       </div>
-      <div className='status'>
+      <div className='listitem-expandable-status'>
         {props.sStatus?.last_reported !== undefined &&
         props.sStatus?.last_reported !== NaN ? (
           <p>Last update: {unixToDate(props.sStatus?.last_reported)}</p>

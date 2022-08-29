@@ -1,5 +1,7 @@
+import "../styles/Navbar.css";
+
 const Navbar = () => {
-  return <div id='navbar'>Navbar</div>;
+  return <header id='navbar'>Oslo Bysykkel</header>;
 };
 
 export default Navbar;
